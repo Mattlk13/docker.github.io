@@ -6,6 +6,7 @@ redirect_from:
 - /engine/installation/binaries/
 - /engine/installation/linux/docker-ce/binaries/
 - /install/linux/docker-ce/binaries/
+- /installation/binaries/
 ---
 
 > **Note**: You may have been redirected to this page because there is no longer
@@ -39,7 +40,7 @@ meets the prerequisites:
 - `iptables` version 1.4 or higher
 - `git` version 1.7 or higher
 - A `ps` executable, usually provided by `procps` or a similar package.
-- [XZ Utils](http://tukaani.org/xz/) 4.9 or higher
+- [XZ Utils](https://tukaani.org/xz/) 4.9 or higher
 - A [properly mounted](
   https://github.com/tianon/cgroupfs-mount/blob/master/cgroupfs-mount)
   `cgroupfs` hierarchy; a single, all-encompassing `cgroup` mount
@@ -85,7 +86,7 @@ instructions for enabling and configuring AppArmor or SELinux.
 2.  Extract the archive using the `tar` utility. The `dockerd` and `docker`
     binaries are extracted.
 
-    ```bash
+    ```console
     $ tar xzvf /path/to/<FILE>.tar.gz
     ```
 
@@ -93,13 +94,13 @@ instructions for enabling and configuring AppArmor or SELinux.
     as `/usr/bin/`. If you skip this step, you must provide the path to the
     executable when you invoke `docker` or `dockerd` commands.
 
-    ```bash
+    ```console
     $ sudo cp docker/* /usr/bin/
     ```
 
 4.  Start the Docker daemon:
 
-    ```bash
+    ```console
     $ sudo dockerd &
     ```
 
@@ -110,7 +111,7 @@ instructions for enabling and configuring AppArmor or SELinux.
 5.  Verify that Docker is installed correctly by running the `hello-world`
     image.
 
-    ```bash
+    ```console
     $ sudo docker run hello-world
     ```
 
@@ -131,23 +132,41 @@ The macOS binary includes the Docker client only. It does not include the
 2.  Extract the archive using the `tar` utility. The `docker` binary is
     extracted.
 
-    ```bash
+    ```console
     $ tar xzvf /path/to/<FILE>.tar.gz
     ```
 
-3.  **Optional**: Move the binary to a directory on your executable path, such
+3.  Clear the extended attributes to allow it run.
+    
+    In case executing `docker/docker` you get the error message: *'docker' is*
+    *damaged and cannot be opened. You should move it to the bin.*
+    
+    Apple takes care about our security. Hence, we need to remove the security 
+    mechanism preventing us running the executable.
+    
+    ```console
+    $ sudo xattr -rc docker
+    ```
+    
+    Now, when you run the following command, you can see the Docker CLI usage instructions:
+    
+    ```console
+    $ docker/docker
+    ```
+
+4.  **Optional**: Move the binary to a directory on your executable path, such
     as `/usr/local/bin/`. If you skip this step, you must provide the path to the
     executable when you invoke `docker` or `dockerd` commands.
 
-    ```bash
+    ```console
     $ sudo cp docker/docker /usr/local/bin/
     ```
 
-4.  Verify that Docker is installed correctly by running the `hello-world`
+5.  Verify that Docker is installed correctly by running the `hello-world`
     image. The value of `<hostname>` is a hostname or IP address running the
     Docker daemon and accessible to the client.
 
-    ```bash
+    ```console
     $ sudo docker -H <hostname> run hello-world
     ```
 

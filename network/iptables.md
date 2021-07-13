@@ -94,6 +94,16 @@ expose ports on an internal IP address, you can use the `--ip` option to
 specify a different IP address. However, setting `--ip` only changes the
 _default_, it does not _restrict_ services to that IP.
 
-## Next steps
+## Integration with Firewalld
 
-- Read [Docker Reference Architecture: Designing Scalable, Portable Docker Container Networks](https://success.docker.com/Architecture/Docker_Reference_Architecture%3A_Designing_Scalable%2C_Portable_Docker_Container_Networks)
+If you are running Docker version 20.10.0 or higher with [firewalld](https://firewalld.org){: target="blank" rel="noopener" class=“”} on your system with `--iptables` enabled, Docker automatically creates a `firewalld` zone called `docker` and inserts all the network interfaces it creates (for example, `docker0`) into the `docker` zone to allow seamless networking.
+
+Consider running the following `firewalld` command to remove the docker interface from the zone.
+
+```bash
+# Please substitute the appropriate zone and docker interface
+$ firewall-cmd --zone=trusted --remove-interface=docker0 --permanent
+$ firewall-cmd --reload
+```
+
+Restarting `dockerd` daemon inserts the interface into the `docker` zone.

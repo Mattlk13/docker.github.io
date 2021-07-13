@@ -114,7 +114,7 @@ For production systems, see
       Data loop file: /var/lib/docker/devicemapper/data
       Metadata loop file: /var/lib/docker/devicemapper/metadata
       Library Version: 1.02.135-RHEL7 (2016-11-16)
-    <output truncated>
+    <...>
     ```
 
   This host is running in `loop-lvm` mode, which is **not** supported on
@@ -144,12 +144,11 @@ below to configure Docker to use the `devicemapper` storage driver in
 
 #### Allow Docker to configure direct-lvm mode
 
-With Docker `17.06` and higher, Docker can manage the block device for you,
-simplifying configuration of `direct-lvm` mode. **This is appropriate for fresh 
-Docker setups only.** You can only use a single block device. If you need to
-use multiple block devices, [configure direct-lvm mode
-manually](#configure-direct-lvm-mode-manually) instead. The following new
-configuration options have been added:
+Docker can manage the block device for you, simplifying configuration of `direct-lvm`
+mode. **This is appropriate for fresh Docker setups only.** You can only use a
+single block device. If you need to use multiple block devices,
+[configure direct-lvm mode manually](#configure-direct-lvm-mode-manually) instead.
+The following new configuration options are available:
 
 | Option                          | Description                                                                                                                                                                        | Required? | Default | Example                            |
 |:--------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:----------|:--------|:-----------------------------------|
@@ -399,7 +398,7 @@ assumes that the Docker daemon is in the `stopped` state.
      Deferred Deletion Enabled: true
      Deferred Deleted Device Count: 0
      Library Version: 1.02.135-RHEL7 (2016-11-16)
-    <output truncated>
+    <...>
     ```
 
     If Docker is configured correctly, the `Data file` and `Metadata file` is
@@ -432,7 +431,7 @@ If you run into repeated problems with thin pool, you can set the storage option
 `/etc/docker/daemon.json`. For instance, setting it to `10` ensures
 that operations fail with a warning when the free space is at or near 10%.
 See the
-[storage driver options in the Engine daemon reference](/engine/reference/commandline/dockerd/#storage-driver-options){: target="_blank" class="_"}.
+[storage driver options in the Engine daemon reference](/engine/reference/commandline/dockerd/#storage-driver-options){: target="_blank" rel="noopener" class="_"}.
 
 ### Increase capacity on a running device
 
@@ -628,7 +627,7 @@ block device and other parameters to suit your situation.
      Metadata Space Used: 286.7 kB
      Metadata Space Total: 1.07 GB
      Metadata Space Available: 1.069 GB
-    <output truncated>
+    <...>
     ```
 
 ### Activate the `devicemapper` after reboot

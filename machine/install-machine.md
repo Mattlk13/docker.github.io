@@ -2,57 +2,58 @@
 description: How to install Docker Machine
 keywords: machine, orchestration, install, installation, docker, documentation, uninstall Docker Machine, uninstall
 title: Install Docker Machine
-hide_from_sitemap: true
 ---
 
 Install Docker Machine binaries by following the instructions in the following section. You can find the latest
 versions of the binaries on the [docker/machine release
-page](https://github.com/docker/machine/releases/){: target="_blank" class="_" }
+page](https://github.com/docker/machine/releases/){: target="_blank" rel="noopener" class="_" }
 on GitHub.
 
 ## Install Docker Machine
 
-1.  Install [Docker](../engine/install/index.md){: target="_blank" class="_" }.
+1.  Install [Docker](../engine/install/index.md){: target="_blank" rel="noopener" class="_" }.
 
 2.  Download the Docker Machine binary and extract it to your PATH.
 
     If you are running **macOS**:
 
     ```console
-    $ base=https://github.com/docker/machine/releases/download/v{{site.machine_version}} &&
-      curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/usr/local/bin/docker-machine &&
-      chmod +x /usr/local/bin/docker-machine
+    $ base=https://github.com/docker/machine/releases/download/v{{site.machine_version}} \
+      && curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/usr/local/bin/docker-machine \
+      && chmod +x /usr/local/bin/docker-machine
     ```
 
     If you are running **Linux**:
 
     ```console
-    $ base=https://github.com/docker/machine/releases/download/v{{site.machine_version}} &&
-      curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine &&
-      sudo mv /tmp/docker-machine /usr/local/bin/docker-machine &&
-      chmod +x /usr/local/bin/docker-machine
+    $ base=https://github.com/docker/machine/releases/download/v{{site.machine_version}} \
+      && curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine \
+      && sudo mv /tmp/docker-machine /usr/local/bin/docker-machine \
+      && chmod +x /usr/local/bin/docker-machine
     ```
 
-    If you are running **Windows** with [Git BASH](https://git-for-windows.github.io/){: target="_blank" class="_"}:
+    If you are running **Windows** with [Git BASH](https://git-for-windows.github.io/){: target="_blank" rel="noopener" class="_"}:
 
     ```console
-    $ base=https://github.com/docker/machine/releases/download/v{{site.machine_version}} &&
-      mkdir -p "$HOME/bin" &&
-      curl -L $base/docker-machine-Windows-x86_64.exe > "$HOME/bin/docker-machine.exe" &&
-      chmod +x "$HOME/bin/docker-machine.exe"
+    $ base=https://github.com/docker/machine/releases/download/v{{site.machine_version}} \
+      && mkdir -p "$HOME/bin" \
+      && curl -L $base/docker-machine-Windows-x86_64.exe > "$HOME/bin/docker-machine.exe" \
+      && chmod +x "$HOME/bin/docker-machine.exe"
     ```
 
     > The above command works on Windows only if you use a
-    terminal emulator such as [Git BASH](https://git-for-windows.github.io/){: target="_blank" class="_"}, which supports Linux commands like `chmod`.
+    terminal emulator such as [Git BASH](https://git-for-windows.github.io/){: target="_blank" rel="noopener" class="_"}, which supports Linux commands like `chmod`.
     {: .important}
 
     Otherwise, download one of the releases from the [docker/machine release
-    page](https://github.com/docker/machine/releases/){: target="_blank" class="_" } directly.
+    page](https://github.com/docker/machine/releases/){: target="_blank" rel="noopener" class="_" } directly.
 
 3.  Check the installation by displaying the Machine version:
 
-        $ docker-machine version
-        docker-machine version {{site.machine_version}}, build 9371605
+    ```console
+    $ docker-machine version
+    docker-machine version {{site.machine_version}}, build 9371605
+    ```
 
 ## Install bash completion scripts
 
@@ -83,14 +84,14 @@ terminal to tell your setup where it can find the file
 To enable the `docker-machine` shell prompt, add
 `$(__docker_machine_ps1)` to your `PS1` setting in `~/.bashrc`.
 
-```
+```bash
 PS1='[\u@\h \W$(__docker_machine_ps1)]\$ '
 ```
 
 You can find additional documentation in the comments at the [top of
 each
 script](https://github.com/docker/machine/tree/master/contrib/completion/bash){:
-target="_blank" class="_"}.
+target="_blank" rel="noopener" class="_"}.
 
 ## How to uninstall Docker Machine
 
@@ -112,17 +113,19 @@ To uninstall Docker Machine:
 *  Remove the executable: `rm $(which docker-machine)`
 
 
->**Note**: As a point of information, the `config.json`, certificates,
-and other data related to each virtual machine created by `docker-machine`
-is stored in `~/.docker/machine/machines/` on Mac and Linux and in
-`~\.docker\machine\machines\` on Windows. We recommend that you do not edit or
-remove those files directly as this only affects information for the Docker
-CLI, not the actual VMs, regardless of whether they are local or on remote
-servers.
+> **Note**
+>
+> As a point of information, the `config.json`, certificates,
+> and other data related to each virtual machine created by `docker-machine`
+> is stored in `~/.docker/machine/machines/` on Mac and Linux and in
+> `~\.docker\machine\machines\` on Windows. We recommend that you do not edit or
+> remove those files directly as this only affects information for the Docker
+> CLI, not the actual VMs, regardless of whether they are local or on remote
+> servers.
 
 ## Where to go next
 
--  [Docker Machine overview](overview.md)
+-  [Docker Machine overview](index.md)
 -  Create and run a Docker host on your [local system using virtualization](get-started.md)
 -  Provision multiple Docker hosts [on your cloud provider](get-started-cloud.md)
 -  [Docker Machine driver reference](drivers/index.md)

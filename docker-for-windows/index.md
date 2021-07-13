@@ -2,179 +2,32 @@
 description: Getting Started
 keywords: windows, edge, tutorial, run, docker, local, machine
 redirect_from:
-- /winkit/getting-started/
-- /winkit/
+- /docker-for-windows/index/
+- /docker-for-windows/started/
+- /engine/installation/windows/
+- /installation/windows/
+- /win/
 - /windows/
 - /windows/started/
-- /docker-for-windows/started/
-- /installation/windows/
-- /engine/installation/windows/
-- /docker-for-windows/index/
-title: Get started with Docker for Windows
+- /winkit/
+- /winkit/getting-started/
+
+title: Docker Desktop for Windows user manual
 toc_min: 1
 toc_max: 2
 ---
 
-Welcome to Docker Desktop!
+Welcome to Docker Desktop! The Docker Desktop for Windows user manual provides information on how to configure and manage your Docker Desktop settings.
 
-The _Docker Desktop for Windows_ section contains information about the Docker Desktop Community Stable release. For information about features available in Edge releases, see the [Edge release notes](edge-release-notes.md). For information about Docker Desktop Enterprise (DDE) releases, see [Docker Desktop Enterprise](/desktop/enterprise/).
+For information about Docker Desktop download, system requirements, and installation instructions, see [Install Docker Desktop](install.md).
 
-Docker is a full development platform to build, run, and share containerized applications. Docker Desktop is the best way to get started with Docker _on Windows_.
+## Settings
 
-See [Install Docker Desktop](install.md){: target="_blank" class="_"} for download information, system requirements, and installation instructions.
-
-## Test your installation
-
-1.  Open a terminal window (Command Prompt or PowerShell, _but not_ PowerShell ISE).
-
-2.  Run `docker --version` to ensure that you have a supported version of Docker:
-
-    ```shell
-    > docker --version
-
-    Docker version 19.03.1
-    ```
-
-3.  Pull the [hello-world image](https://hub.docker.com/r/library/hello-world/) from Docker Hub and run a container:
-
-    ```shell
-    > docker run hello-world
-
-    docker : Unable to find image 'hello-world:latest' locally
-    latest: Pulling from library/hello-world
-    1b930d010525: Pull complete
-    Digest: sha256:c3b4ada4687bbaa170745b3e4dd8ac3f194ca95b2d0518b417fb47e5879d9b5f
-    Status: Downloaded newer image for hello-world:latest
-
-    Hello from Docker!
-    This message shows that your installation appears to be working correctly.
-    ...
-
-    ```
-
-4.  List the `hello-world` _image_ that was downloaded from Docker Hub:
-
-    ```shell
-    > docker image ls
-    ```
-
-5.  List the `hello-world` _container_ (that exited after displaying "Hello from Docker!"):
-
-    ```shell
-    > docker container ls --all
-    ```
-
-6.  Explore the Docker help pages by running some help commands:
-
-    ```shell
-    > docker --help
-    > docker container --help
-    > docker container ls --help
-    > docker run --help
-    ```
-
-## Explore the application
-
-In this section, we demonstrate the ease and power of Dockerized applications by
-running something more complex, such as an OS and a webserver.
-
-1. Pull an image of the [Ubuntu OS](https://hub.docker.com/r/_/ubuntu/) and run an interactive terminal inside the spawned container:
-
-    ```shell
-    > docker run --interactive --tty ubuntu bash
-
-    docker : Unable to find image 'ubuntu:latest' locally
-    latest: Pulling from library/ubuntu
-    22e816666fd6: Pull complete
-    079b6d2a1e53: Pull complete
-    11048ebae908: Pull complete
-    c58094023a2e: Pull complete
-    Digest: sha256:a7b8b7b33e44b123d7f997bd4d3d0a59fafc63e203d17efedf09ff3f6f516152
-    Status: Downloaded newer image for ubuntu:latest
-    ```
-
-    > Do not use PowerShell ISE
-    >
-    > Interactive terminals do not work in PowerShell ISE (but they do in PowerShell). See [docker/for-win/issues/223](https://github.com/docker/for-win/issues/223).
-
-2. You are in the container. At the root `#` prompt, check the `hostname` of the container:
-
-    ```shell
-    root@8aea0acb7423:/# hostname
-    8aea0acb7423
-    ```
-
-    Notice that the hostname is assigned as the container ID (and is also used in the prompt).
-
-3. Exit the shell with the `exit` command (which also stops the container):
-
-    ```shell
-    root@8aea0acb7423:/# exit
-    >
-    ```
-
-4. List containers with the `--all` option (because no containers are running).
-
-    The `hello-world` container (randomly named, `relaxed_sammet`) stopped after displaying its message. The `ubuntu` container (randomly named, `laughing_kowalevski`) stopped when you exited the container.
-
-    ```shell
-    > docker container ls --all
-
-    CONTAINER ID    IMAGE          COMMAND     CREATED          STATUS                      PORTS    NAMES
-    8aea0acb7423    ubuntu         "bash"      2 minutes ago    Exited (0) 2 minutes ago             laughing_kowalevski
-    45f77eb48e78    hello-world    "/hello"    3 minutes ago    Exited (0) 3 minutes ago             relaxed_sammet
-    ```
-
-5. Pull and run a Dockerized [nginx](https://hub.docker.com/_/nginx/) web server that we name, `webserver`:
-
-    ```shell
-    > docker run --detach --publish 80:80 --name webserver nginx
-
-    Unable to find image 'nginx:latest' locally
-    latest: Pulling from library/nginx
-
-    fdd5d7827f33: Pull complete
-    a3ed95caeb02: Pull complete
-    716f7a5f3082: Pull complete
-    7b10f03a0309: Pull complete
-    Digest: sha256:f6a001272d5d324c4c9f3f183e1b69e9e0ff12debeb7a092730d638c33e0de3e
-    Status: Downloaded newer image for nginx:latest
-    dfe13c68b3b86f01951af617df02be4897184cbf7a8b4d5caf1c3c5bd3fc267f
-    ```
-
-6. Point your web browser at `http://localhost` to display the nginx start page. (You don't need to append `:80` because you specified the default HTTP port in the `docker` command.)
-
-    ![Run nginx edge](images/nginx-homepage.png)
-
-7. List only your _running_ containers:
-
-    ```shell
-    > docker container ls
-
-    CONTAINER ID    IMAGE    COMMAND                   CREATED          STATUS          PORTS                 NAMES
-    0e788d8e4dfd    nginx    "nginx -g 'daemon of…"    2 minutes ago    Up 2 minutes    0.0.0.0:80->80/tcp    webserver
-    ```
-
-8. Stop the running nginx container by the name we assigned it, `webserver`:
-
-    ```shell
-    >  docker container stop webserver
-    ```
-
-9. Remove all three containers by their names -- the latter two names will differ for you:
-
-    ```shell
-    > docker container rm webserver laughing_kowalevski relaxed_sammet
-    ```
-
-## Docker Settings dialog
-
-The **Docker Desktop** menu allows you to configure your Docker settings such as installation, updates, version channels, Docker Hub login,
-and more.
+The **Docker Desktop** menu allows you to open the Docker Dashboard, run the Quick Start Guide, configure your Docker settings such as installation, updates, version channels, Docker Hub login, and more.
 
 This section explains the configuration options accessible from the **Settings** dialog.
 
-1. Open the Docker Desktop menu by clicking the Docker icon in the Notifications area (or System tray):
+1. To open the Docker Desktop menu, right-click the Docker icon in the Notifications area (or System tray):
 
     ![Showing hidden apps in the taskbar](images/whale-icon-systray-hidden.png){:width="250px"}
 
@@ -188,20 +41,21 @@ On the **General** tab of the Settings dialog, you can configure when to start a
 
 ![Settings](images/settings-general.png){:width="750px"}
 
-* **Start Docker when you log in** - Automatically start Docker Desktop upon Windows system login.
+- **Automatically check for updates**: By default, Docker Desktop is configured to check for newer versions automatically. If you have installed Docker Desktop as part of an organization, you may not be able to update Docker Desktop yourself. In that case, [upgrade your existing organization to a Team plan](https://www.docker.com/pricing?utm_source=docker&utm_medium=webreferral&utm_campaign=docs_driven_upgrade) and clear this checkbox to disable the automatic check for updates.
 
-* **Automatically check for updates** - By default, Docker Desktop automatically checks for updates and notifies you when an update is available.
-Click **OK** to accept and install updates (or cancel to keep the current
-version). You can manually update by choosing **Check for Updates** from the
-main Docker menu.
+- **Start Docker when you log in**: Select this option to automatically start Docker Desktop when you log into your Windows machine.
 
-* **Expose daemon on tcp://localhost:2375 without TLS** - Click this option to enable legacy clients to connect to the Docker daemon. You must use this option with caution as exposing the daemon without TLS can result in remote code execution attacks.
+- **Expose daemon on tcp://localhost:2375 without TLS**: Click this option to enable legacy clients to connect to the Docker daemon. You must use this option with caution as exposing the daemon without TLS can result in remote code execution attacks.
 
-* **Send usage statistics** - By default, Docker Desktop sends diagnostics,
+- **Use the WSL 2 based engine**: WSL 2 provides better performance than the legacy Hyper-V backend. For more information, see [Docker Desktop WSL 2 backend](wsl.md).
+
+- **Send usage statistics**: By default, Docker Desktop sends diagnostics,
 crash reports, and usage data. This information helps Docker improve and
 troubleshoot the application. Clear the check box to opt out. Docker may periodically prompt you for more information.
 
-  Click **Switch to the Edge version** to learn more about Docker Desktop Edge releases.
+- **Show weekly tips**: Displays useful advice and suggestions about using Docker.
+
+- **Open Docker Desktop dashboard at startup**: Automatically opens the dashboard when starting Docker Desktop.
 
 ### Resources
 
@@ -219,22 +73,22 @@ mode, Linux containers in Hyper-V mode, or Windows containers.
 > The Advanced tab is only available in Hyper-V mode, because in WSL 2 mode and 
 > Windows container mode these resources are managed by Windows. In WSL 2 
 > mode, you can configure limits on the memory, CPU, and swap size allocated
-> to the [WSL 2 utility VM](https://docs.microsoft.com/en-us/windows/wsl/release-notes#build-18945).
+> to the [WSL 2 utility VM](https://docs.microsoft.com/en-us/windows/wsl/wsl-config#configure-global-options-with-wslconfig).
 
 Use the **Advanced** tab to limit resources available to Docker.
 
-**CPUs**: By default, Docker Desktop is set to use half the number of processors
+- **CPUs**: By default, Docker Desktop is set to use half the number of processors
 available on the host machine. To increase processing power, set this to a
 higher number; to decrease, lower the number.
 
-**Memory**: By default, Docker Desktop is set to use `2` GB runtime memory,
+- **Memory**: By default, Docker Desktop is set to use `2` GB runtime memory,
 allocated from the total available memory on your machine. To increase the RAM, set this to a higher number. To decrease it, lower the number.
 
-**Swap**: Configure swap file size as needed. The default is 1 GB.
+- **Swap**: Configure swap file size as needed. The default is 1 GB.
 
-**Disk image size**: Specify the size of the disk image.
+- **Disk image size**: Specify the size of the disk image.
 
-**Disk image location**: Specify the location of the Linux volume where containers and images are stored.
+- **Disk image location**: Specify the location of the Linux volume where containers and images are stored.
 
 You can also move the disk image to a different location. If you attempt to move a disk image to a location that already has one, you get a prompt asking if you want to use the existing image or replace it.
 
@@ -259,6 +113,11 @@ File share settings are:
   bind mount (`-v`) feature.
 
 > Tips on shared folders, permissions, and volume mounts
+>
+ * Share only the directories that you need with the container. File sharing
+ introduces overhead as any changes to the files on the host need to be notified
+ to the Linux VM. Sharing too many files can lead to high CPU load and slow
+ filesystem performance.
 >
  * Shared folders are designed to allow application code to be edited on the host while being executed in containers. For non-code items
  such as cache directories or databases, the performance will be much better if they are stored in
@@ -294,7 +153,7 @@ If you wish to set the proxy settings for your containers, you need to define
 environment variables for them, just like you would do on Linux, for example:
 
 ```ps
-> docker run -e HTTP_PROXY=http://proxy.example.com:3128 alpine env
+> docker run -e HTTP_PROXY=https://proxy.example.com:3128 alpine env
 
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 HOSTNAME=b7edf988b2b5
@@ -317,12 +176,14 @@ You can configure Docker Desktop networking to work on a virtual private network
 
 **DNS Server**: You can configure the DNS server to use dynamic or static IP addressing.
 
-> **Note**: Some users reported problems connecting to Docker Hub on Docker Desktop Stable version. This would manifest as an error when trying to run
-> `docker` commands that pull images from Docker Hub that are not already
-> downloaded, such as a first time run of `docker run hello-world`. If you
-> encounter this, reset the DNS server to use the Google DNS fixed address:
-> `8.8.8.8`. For more information, see
-> [Networking issues](troubleshoot.md#networking-issues) in Troubleshooting.
+> **Note**
+>
+> Some users reported problems connecting to Docker Hub on Docker Desktop. This would manifest as an error when trying to run
+`docker` commands that pull images from Docker Hub that are not already
+downloaded, such as a first time run of `docker run hello-world`. If you
+encounter this, reset the DNS server to use the Google DNS fixed address:
+`8.8.8.8`. For more information, see
+[Networking issues](troubleshoot.md#networking-issues) in Troubleshooting.
 
 Updating these settings requires a reconfiguration and reboot of the Linux VM.
 
@@ -355,12 +216,9 @@ Click **Apply & Restart** to save your settings and restart Docker Desktop.
 
 On the Command Line page, you can specify whether or not to enable experimental features.
 
-On both Docker Desktop Edge and Stable releases, you can toggle the experimental features on and off. If you toggle the experimental features off, Docker Desktop uses the current generally available release of Docker Engine.
+You can toggle the experimental features on and off in Docker Desktop. If you toggle the experimental features off, Docker Desktop uses the current generally available release of Docker Engine.
 
 #### Experimental features
-
-Docker Desktop Edge releases have the experimental version
-of Docker Engine enabled by default, described in the [Docker Experimental Features README](https://github.com/docker/cli/blob/master/experimental/README.md) on GitHub.
 
 {% include experimental.md %}
 
@@ -406,46 +264,10 @@ Server: Docker Engine - Community
 >
 > The Kubernetes tab is not available in Windows container mode.
 
-Docker Desktop includes a standalone Kubernetes server that runs on your Windows host, so that you can test deploying your Docker workloads on Kubernetes.
+Docker Desktop includes a standalone Kubernetes server that runs on your Windows machine, so
+that you can test deploying your Docker workloads on Kubernetes. To enable Kubernetes support and install a standalone instance of Kubernetes running as a Docker container, select **Enable Kubernetes**.
 
-![Enable Kubernetes](images/settings-kubernetes.png){:width="750px"}
-
-The Kubernetes client command, `kubectl`, is included and configured to connect
-to the local Kubernetes server. If you have `kubectl` already installed and
-pointing to some other environment, such as `minikube` or a GKE cluster, be sure
-to change context so that `kubectl` is pointing to `docker-desktop`:
-
-```bash
-> kubectl config get-contexts
-> kubectl config use-context docker-desktop
-```
-
- To enable Kubernetes support and install a standalone instance of Kubernetes
-  running as a Docker container, select **Enable Kubernetes**.
-
-To set Kubernetes as the
-  [default orchestrator](/docker-for-mac/kubernetes/#override-the-default-orchestrator), select **Deploy Docker Stacks to Kubernetes by default**.
-
-By default, Kubernetes containers are hidden from commands like `docker
-service ls`, because managing them manually is not supported. To make them
-visible, select **Show system containers (advanced)**. Most users do not need this option.
-
-Click **Apply & Restart** to save the settings. This instantiates images required to run the Kubernetes server as containers, and installs the `kubectl.exe` command in the path.
-
-- When Kubernetes is enabled and running, an additional status bar item displays
-at the bottom right of the Docker Desktop Settings dialog. The status of Kubernetes shows in the Docker menu and the context points to
-  `docker-desktop`.
-
-- To disable Kubernetes support at any time, clear the **Enable Kubernetes** check box.
-  The Kubernetes containers are stopped and removed, and the
-  `/usr/local/bin/kubectl` command is removed.
-
-- To delete all stacks and Kubernetes resources, select **Reset Kubernetes Cluster**.
-
-- If you installed `kubectl` by another method, and
-experience conflicts, remove it.
-
-  For more information on using the Kubernetes integration with Docker Desktop, see [Deploy on Kubernetes](kubernetes.md).
+For more information about using the Kubernetes integration with Docker Desktop, see [Deploy on Kubernetes](../desktop/kubernetes.md){:target="_blank" rel="noopener" class="_"}.
 
 ### Reset
 
@@ -505,12 +327,12 @@ The Docker Desktop Dashboard enables you to interact with containers and applica
 
 ## Docker Hub
 
-Select **Sign in /Create Docker ID** from the Docker Desktop menu to access your [Docker Hub](https://hub.docker.com/){: target="_blank" class="_" } account. Once logged in, you can access your Docker Hub repositories directly from the Docker Desktop menu.
+Select **Sign in /Create Docker ID** from the Docker Desktop menu to access your [Docker Hub](https://hub.docker.com/){: target="_blank" rel="noopener" class="_" } account. Once logged in, you can access your Docker Hub repositories directly from the Docker Desktop menu.
 
-For more information, refer to the following [Docker Hub topics](../docker-hub/index.md){: target="_blank" class="_" }:
+For more information, refer to the following [Docker Hub topics](../docker-hub/index.md){: target="_blank" rel="noopener" class="_" }:
 
-* [Organizations and Teams in Docker Hub](../docker-hub/orgs.md){: target="_blank" class="_" }
-* [Builds and Images](../docker-hub/builds/index.md){: target="_blank" class="_" }
+* [Organizations and Teams in Docker Hub](../docker-hub/orgs.md){: target="_blank" rel="noopener" class="_" }
+* [Builds and Images](../docker-hub/builds/index.md){: target="_blank" rel="noopener" class="_" }
 
 ### Two-factor authentication
 
@@ -532,10 +354,7 @@ After you have successfully authenticated, you can access your organizations and
 
 ## Adding TLS certificates
 
-You can add trusted **Certificate Authorities (CAs)** to your Docker daemon to verify registry server
-certificates, and **client certificates**, to authenticate to registries. For more information, see [How do I add custom CA certificates?](faqs.md#how-do-i-add-custom-ca-certificates)
-and [How do I add client certificates?](faqs.md#how-do-i-add-client-certificates)
-in the FAQs.
+You can add trusted **Certificate Authorities (CAs)** to your Docker daemon to verify registry server certificates, and **client certificates**, to authenticate to registries.
 
 ### How do I add custom CA certificates?
 
@@ -575,8 +394,8 @@ in the Docker Engine topics.
 
 ## Where to go next
 
-* Try out the walkthrough at [Get Started](../get-started/index.md){: target="_blank" class="_"}.
+* Try out the walkthrough at [Get Started](../get-started/index.md){: target="_blank" rel="noopener" class="_"}.
 
 * Dig in deeper with [Docker Labs](https://github.com/docker/labs/) example walkthroughs and source code.
 
-* Refer to the [Docker CLI Reference Guide](/engine/reference/commandline/cli/){: target="_blank" class="_"}.
+* Refer to the [Docker CLI Reference Guide](/engine/reference/commandline/cli/){: target="_blank" rel="noopener" class="_"}.

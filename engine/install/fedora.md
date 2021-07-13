@@ -20,15 +20,15 @@ To get started with Docker Engine on Fedora, make sure you
 
 To install Docker Engine, you need the 64-bit version of one of these Fedora versions:
 
-- Fedora 30
-- Fedora 31
+- Fedora 33
+- Fedora 34
 
 ### Uninstall old versions
 
 Older versions of Docker were called `docker` or `docker-engine`. If these are
 installed, uninstall them, along with associated dependencies.
 
-```bash
+```console
 $ sudo dnf remove docker \
                   docker-client \
                   docker-client-latest \
@@ -76,7 +76,7 @@ from the repository.
 Install the `dnf-plugins-core` package (which provides the commands to manage
 your DNF repositories) and set up the **stable** repository.
 
-```bash
+```console
 $ sudo dnf -y install dnf-plugins-core
 
 $ sudo dnf config-manager \
@@ -90,13 +90,13 @@ $ sudo dnf config-manager \
 > by default. You can enable them alongside the stable repository.  The following
 > command enables the **nightly** repository.
 >
-> ```bash
+> ```console
 > $ sudo dnf config-manager --set-enabled docker-ce-nightly
 > ```
 >
 > To enable the **test** channel, run the following command:
 >
-> ```bash
+> ```console
 > $ sudo dnf config-manager --set-enabled docker-ce-test
 > ```
 >
@@ -105,7 +105,7 @@ $ sudo dnf config-manager \
 > use the `--set-enabled` flag. The following command disables the **nightly**
 > repository.
 >
-> ```bash
+> ```console
 > $ sudo dnf config-manager --set-disabled docker-ce-nightly
 > ```
 >
@@ -115,7 +115,7 @@ $ sudo dnf config-manager \
 
 1.  Install the _latest version_ of Docker Engine and containerd, or go to the next step to install a specific version:
 
-    ```bash
+    ```console
     $ sudo dnf install docker-ce docker-ce-cli containerd.io
     ```
 
@@ -137,7 +137,7 @@ $ sudo dnf config-manager \
     a. List and sort the versions available in your repo. This example sorts
        results by version number, highest to lowest, and is truncated:
 
-    ```bash
+    ```console
     $ dnf list docker-ce  --showduplicates | sort -r
 
     docker-ce.x86_64  3:18.09.1-3.fc28                 docker-ce-stable
@@ -154,31 +154,22 @@ $ sudo dnf config-manager \
        the first hyphen, separated by a hyphen (`-`), for example,
        `docker-ce-3:18.09.1`.
 
-    ```bash
+    ```console
     $ sudo dnf -y install docker-ce-<VERSION_STRING> docker-ce-cli-<VERSION_STRING> containerd.io
     ```
 
     Docker is installed but not started. The `docker` group is created, but no users are added to the group.
 
-3.  Cgroups Exception:
-    For Fedora 31 and higher, you need to enable the [backward compatibility for Cgroups](https://fedoraproject.org/wiki/Common_F31_bugs#Other_software_issues).
+3.  Start Docker.
 
-    ```bash
-    $ sudo grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
-    ```
-    
-    After running the command, you must reboot for the changes to take effect.
-    
-4.  Start Docker.
-
-    ```bash
+    ```console
     $ sudo systemctl start docker
     ```
 
-5.  Verify that Docker Engine is installed correctly by running the `hello-world`
+4.  Verify that Docker Engine is installed correctly by running the `hello-world`
     image.
 
-    ```bash
+    ```console
     $ sudo docker run hello-world
     ```
 
@@ -201,7 +192,7 @@ If you cannot use Docker's repository to install Docker, you can download the
 `.rpm` file for your release and install it manually. You need to download
 a new file each time you want to upgrade Docker Engine.
 
-1.  Go to [{{ download-url-base }}/]({{ download-url-base }}/){: target="_blank" class="_" }
+1.  Go to [{{ download-url-base }}/]({{ download-url-base }}/){: target="_blank" rel="noopener" class="_" }
     and choose your version of Fedora. Then browse to `x86_64/stable/Packages/`
     and download the `.rpm` file for the Docker version you want to install.
 
@@ -212,7 +203,7 @@ a new file each time you want to upgrade Docker Engine.
 2.  Install Docker Engine, changing the path below to the path where you downloaded
     the Docker package.
 
-    ```bash
+    ```console
     $ sudo dnf -y install /path/to/package.rpm
     ```
 
@@ -221,14 +212,14 @@ a new file each time you want to upgrade Docker Engine.
 
 3.  Start Docker.
 
-    ```bash
+    ```console
     $ sudo systemctl start docker
     ```
 
 4.  Verify that Docker Engine is installed correctly by running the `hello-world`
     image.
 
-    ```bash
+    ```console
     $ sudo docker run hello-world
     ```
 
@@ -252,7 +243,7 @@ instead of `dnf -y install`, and pointing to the new file.
 
 1.  Uninstall the Docker Engine, CLI, and Containerd packages:
 
-    ```bash
+    ```console
     $ sudo dnf remove docker-ce docker-ce-cli containerd.io
     ```
 
@@ -260,8 +251,9 @@ instead of `dnf -y install`, and pointing to the new file.
     are not automatically removed. To delete all images, containers, and
     volumes:
 
-    ```bash
+    ```console
     $ sudo rm -rf /var/lib/docker
+    $ sudo rm -rf /var/lib/containerd
     ```
 
 You must delete any edited configuration files manually.

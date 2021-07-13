@@ -23,6 +23,7 @@ Dockerfile  instruction. The layers are stacked and each one is a delta of the
 changes from the previous layer. Consider this `Dockerfile`:
 
 ```dockerfile
+# syntax=docker/dockerfile:1
 FROM ubuntu:18.04
 COPY . /app
 RUN make /app
@@ -39,7 +40,7 @@ Each instruction creates one layer:
 When you run an image and generate a container, you add a new _writable layer_
 (the "container layer") on top of the underlying layers. All changes made to
 the running container, such as writing new files, modifying existing files, and
-deleting files, are written to this thin writable container layer.
+deleting files, are written to this writable container layer.
 
 For more on image layers (and how Docker builds and stores images), see
 [About storage drivers](../../storage/storagedriver/index.md).
@@ -107,7 +108,7 @@ can be useful to perform one-off builds without writing a Dockerfile to disk,
 or in situations where the `Dockerfile` is generated, and should not persist
 afterwards.
 
-> The examples in this section use [here documents](http://tldp.org/LDP/abs/html/here-docs.html)
+> The examples in this section use [here documents](https://tldp.org/LDP/abs/html/here-docs.html)
 > for convenience, but any method to provide the `Dockerfile` on `stdin` can be
 > used.
 > 
@@ -192,7 +193,7 @@ docker build [OPTIONS] -f- PATH
 
 The example below uses the current directory (`.`) as the build context, and builds
 an image using a `Dockerfile` that is passed through `stdin` using a [here
-document](http://tldp.org/LDP/abs/html/here-docs.html).
+document](https://tldp.org/LDP/abs/html/here-docs.html).
 
 ```bash
 # create a directory to work in
@@ -271,7 +272,8 @@ frequently changed:
 A Dockerfile for a Go application could look like:
 
 ```dockerfile
-FROM golang:1.11-alpine AS build
+# syntax=docker/dockerfile:1
+FROM golang:1.16-alpine AS build
 
 # Install tools required for project
 # Run `docker build --no-cache .` to update dependencies
@@ -315,7 +317,7 @@ Limiting each container to one process is a good rule of thumb, but it is not a
 hard and fast rule. For example, not only can containers be
 [spawned with an init process](../../engine/reference/run.md#specify-an-init-process),
 some programs might spawn additional processes of their own accord. For
-instance, [Celery](http://www.celeryproject.org/) can spawn multiple worker
+instance, [Celery](https://docs.celeryproject.org/) can spawn multiple worker
 processes, and [Apache](https://httpd.apache.org/) can create one process per
 request.
 
@@ -352,7 +354,8 @@ RUN apt-get update && apt-get install -y \
   cvs \
   git \
   mercurial \
-  subversion
+  subversion \
+  && rm -rf /var/lib/apt/lists/*
 ```
 
 ### Leverage build cache
@@ -403,7 +406,7 @@ maintainable `Dockerfile`.
 
 Whenever possible, use current official images as the basis for your
 images. We recommend the [Alpine image](https://hub.docker.com/_/alpine/) as it
-is tightly controlled and small in size (currently under 5 MB), while still
+is tightly controlled and small in size (currently under 6 MB), while still
 being a full Linux distribution.
 
 ### LABEL
@@ -468,13 +471,6 @@ Probably the most common use-case for `RUN` is an application of `apt-get`.
 Because it installs packages, the `RUN apt-get` command has several gotchas to
 look out for.
 
-Avoid `RUN apt-get upgrade` and `dist-upgrade`, as many of the "essential"
-packages from the parent images cannot upgrade inside an
-[unprivileged container](../../engine/reference/run.md#security-configuration). If a package
-contained in the parent image is out-of-date, contact its maintainers. If you
-know there is a particular package, `foo`, that needs to be updated, use
-`apt-get install -y foo` to update automatically.
-
 Always combine `RUN apt-get update` with `apt-get install` in the same `RUN`
 statement. For example:
 
@@ -482,7 +478,8 @@ statement. For example:
 RUN apt-get update && apt-get install -y \
     package-bar \
     package-baz \
-    package-foo
+    package-foo  \
+    && rm -rf /var/lib/apt/lists/*
 ```
 
 Using `apt-get update` alone in a `RUN` statement causes caching issues and
@@ -490,6 +487,7 @@ subsequent `apt-get install` instructions fail. For example, say you have a
 Dockerfile:
 
 ```dockerfile
+# syntax=docker/dockerfile:1
 FROM ubuntu:18.04
 RUN apt-get update
 RUN apt-get install -y curl
@@ -499,6 +497,7 @@ After building the image, all layers are in the Docker cache. Suppose you later
 modify `apt-get install` by adding extra package:
 
 ```dockerfile
+# syntax=docker/dockerfile:1
 FROM ubuntu:18.04
 RUN apt-get update
 RUN apt-get install -y curl nginx
@@ -631,7 +630,7 @@ the recipient container back to the source (ie, `MYSQL_PORT_3306_TCP`).
 
 To make new software easier to run, you can use `ENV` to update the
 `PATH` environment variable for the software your container installs. For
-example, `ENV PATH /usr/local/nginx/bin:$PATH` ensures that `CMD ["nginx"]`
+example, `ENV PATH=/usr/local/nginx/bin:$PATH` ensures that `CMD ["nginx"]`
 just works.
 
 The `ENV` instruction is also useful for providing required environment
@@ -642,10 +641,10 @@ Lastly, `ENV` can also be used to set commonly used version numbers so that
 version bumps are easier to maintain, as seen in the following example:
 
 ```dockerfile
-ENV PG_MAJOR 9.3
-ENV PG_VERSION 9.3.4
-RUN curl -SL http://example.com/postgres-$PG_VERSION.tar.xz | tar -xJC /usr/src/postgress && …
-ENV PATH /usr/local/postgres-$PG_MAJOR/bin:$PATH
+ENV PG_MAJOR=9.3
+ENV PG_VERSION=9.3.4
+RUN curl -SL https://example.com/postgres-$PG_VERSION.tar.xz | tar -xJC /usr/src/postgres && …
+ENV PATH=/usr/local/postgres-$PG_MAJOR/bin:$PATH
 ```
 
 Similar to having constant variables in a program (as opposed to hard-coding
@@ -654,10 +653,11 @@ auto-magically bump the version of the software in your container.
 
 Each `ENV` line creates a new intermediate layer, just like `RUN` commands. This
 means that even if you unset the environment variable in a future layer, it
-still persists in this layer and its value can't be dumped. You can test this by
+still persists in this layer and its value can be dumped. You can test this by
 creating a Dockerfile like the following, and then building it.
 
 ```dockerfile
+# syntax=docker/dockerfile:1
 FROM alpine
 ENV ADMIN_USER="mark"
 RUN echo $ADMIN_USER > ./mark
@@ -679,6 +679,7 @@ improves readability. You could also put all of the commands into a shell script
 and have the `RUN` command just run that shell script.
 
 ```dockerfile
+# syntax=docker/dockerfile:1
 FROM alpine
 RUN export ADMIN_USER="mark" \
     && echo $ADMIN_USER > ./mark \
@@ -727,7 +728,7 @@ have to add another layer in your image. For example, you should avoid doing
 things like:
 
 ```dockerfile
-ADD http://example.com/big.tar.xz /usr/src/things/
+ADD https://example.com/big.tar.xz /usr/src/things/
 RUN tar -xJf /usr/src/things/big.tar.xz -C /usr/src/things
 RUN make -C /usr/src/things all
 ```
@@ -736,7 +737,7 @@ And instead, do something like:
 
 ```dockerfile
 RUN mkdir -p /usr/src/things \
-    && curl -SL http://example.com/big.tar.xz \
+    && curl -SL https://example.com/big.tar.xz \
     | tar -xJC /usr/src/things \
     && make -C /usr/src/things all
 ```
@@ -800,7 +801,7 @@ exec "$@"
 
 > Configure app as PID 1
 >
-> This script uses [the `exec` Bash command](http://wiki.bash-hackers.org/commands/builtin/exec)
+> This script uses [the `exec` Bash command](https://wiki.bash-hackers.org/commands/builtin/exec)
 > so that the final running application becomes the container's PID 1. This
 > allows the application to receive any Unix signals sent to the container.
 > For more, see the [`ENTRYPOINT` reference](../../engine/reference/builder.md#entrypoint).

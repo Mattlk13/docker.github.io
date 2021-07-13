@@ -409,7 +409,13 @@ secrets.
     $ mkdir auth
     $ docker run \
       --entrypoint htpasswd \
-      registry:2 -Bbn testuser testpassword > auth/htpasswd
+      httpd:2 -Bbn testuser testpassword > auth/htpasswd
+    ```
+    
+    On Windows, make sure the output file is correctly encoded:
+
+    ```powershell
+    docker run --rm --entrypoint htpasswd httpd:2 -Bbn testuser testpassword | Set-Content -Encoding ASCII auth/htpasswd
     ```
 
 2.  Stop the registry.
@@ -520,8 +526,8 @@ following:
   pushed, but are always fetched from their authorized location. This is fine
   for internet-connected hosts, but not in an air-gapped set-up.
 
-  In Docker 17.06 and higher, you can configure the Docker daemon to allow
-  pushing non-distributable layers to private registries, in this scenario.
+  You can configure the Docker daemon to allow pushing non-distributable layers 
+  to private registries.
   **This is only useful in air-gapped set-ups in the presence of
   non-distributable images, or in extremely bandwidth-limited situations.**
   You are responsible for ensuring that you are in compliance with the terms of

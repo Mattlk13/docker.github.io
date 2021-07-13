@@ -9,10 +9,10 @@ systems. To allow tools to wrap Docker and push trusted content, there are
 environment variables that can be passed through to the client. 
 
 This guide follows the steps as described 
-[here](content_trust/#signing-images-with-docker-content-trust) so please read 
+[here](index.md#signing-images-with-docker-content-trust) so please read 
 that and understand its prerequisites. 
 
-When working directly with the Notary client, it uses its [own set of environment variables](../../../notary/reference/client-config.md#environment-variables-optional).
+When working directly with the Notary client, it uses its [own set of environment variables](https://github.com/theupdateframework/notary/blob/master/docs/reference/client-config.md#environment-variables-optional){:target="_blank" rel="noopener" class="_"}.
 
 ## Add a delegation private key
 
@@ -75,6 +75,7 @@ you should set the environment variable `DOCKER_CONTENT_TRUST` either manually o
 in a scripted fashion. Consider the simple Dockerfile below.
 
 ```dockerfile
+# syntax=docker/dockerfile:1
 FROM docker/trusttest:latest
 RUN echo
 ```
@@ -104,6 +105,6 @@ unable to process Dockerfile: No trust data for notrust
 ## Related information
 
 * [Delegations for content trust](trust_delegation.md)
-* [Content trust in Docker](content_trust.md)
+* [Content trust in Docker](index.md)
 * [Manage keys for content trust](trust_key_mng.md)
 * [Play in a content trust sandbox](trust_sandbox.md)

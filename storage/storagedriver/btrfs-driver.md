@@ -42,7 +42,7 @@ Btrfs Filesystem as Btrfs.
   command:
 
   ```bash
-  $ sudo cat /proc/filesystems | grep btrfs
+  $ grep btrfs /proc/filesystems
 
   btrfs
   ```
@@ -124,7 +124,7 @@ This procedure is essentially identical on SLES and Ubuntu.
     Storage Driver: btrfs
      Build Version: Btrfs v4.4
      Library Version: 101
-    <output truncated>
+    <...>
     ```
 
 8.  When you are ready, remove the `/var/lib/docker.bk` directory.

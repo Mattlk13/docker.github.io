@@ -1,7 +1,7 @@
 ---
 description: Smoketest page
 title: Testing page
-hide_from_sitemap: true
+sitemap: false
 toc_min: 1
 ---
 
@@ -92,14 +92,14 @@ culpa qui officia deserunt mollit anim id est laborum.
 
 - [a markdown link](https://docker.com/)
 https://github.com/docker/docker.github.io/tree/master/docker-cloud/images
-- [a markdown link that opens in a new window](https://docker.com/){: target="_blank" class="_" }
+- [a markdown link that opens in a new window](https://docker.com/){: target="_blank" rel="noopener" class="_" }
   (the `class="_"` trick prevents Atom from italicizing the whole rest of the file until it encounters another underscore.)
 
 - [a markdown link to a custom target ID](#custom-target-id)
 
 - <a href="https://docker.com/">an HTML link</a>
 
-- <a href="https://docker.com/" target="_blank" class="_">an HTML link that opens in a new window</a>
+- <a href="https://docker.com/" target="_blank" rel="noopener" class="_">an HTML link that opens in a new window</a>
 
 - A link to a Github PR in `docker/docker`: {% include github-pr.md pr=28199 %}
 
@@ -162,7 +162,7 @@ might be interesting. You can use them with Markdown or HTML images.
 
 You can add a link to a YouTube video like this:
 
-[Docker 101: Introduction to Docker](https://www.youtube.com/watch?v=V9IJj4MzZBc "Docker 101: Introduction to Docker"){:target="_blank" class="_"}
+[Docker 101: Introduction to Docker](https://www.youtube.com/watch?v=V9IJj4MzZBc "Docker 101: Introduction to Docker"){:target="_blank" rel="noopener" class="_"}
 
 To make the `.png` shown above, first take a screen snap of the YouTube video
 you want to use, then use a graphics app to overlay a play button onto the
@@ -239,15 +239,15 @@ only need to do it on the first one. If you have a `<th>`, set it there.
   <tr>
   <td>This is some test text. <br><br>This is more <b>text</b> on a new line. <br><br>Lorem ipsum dolor <tt>sit amet</tt>, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
     </td>
-    <td>This is some more text about the right hand side. There is a <a href="https://github.com/docker/docker-ce/blob/master/components/cli/experimental/README.md" target="_blank" class="_">link here to the Docker Experimental Features README</a> on GitHub. In tables, links need to be `<a href="..."></a>`. <br><br>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
+    <td>This is some more text about the right hand side. There is a <a href="https://github.com/docker/docker-ce/blob/master/components/cli/experimental/README.md" target="_blank" rel="noopener" class="_">link here to the Docker Experimental Features README</a> on GitHub. In tables, links need to be `<a href="/"></a>`. <br><br>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
   </tr>
   <tr>
   <td>
-  <p><a class="button outline-btn" href="/">Go to the docs!</a></p>
+  <p><a class="button primary-btn" href="/">Go to the docs!</a></p>
   <p><a href="/"><font color="#BDBDBD" size="-1">It is dark here. You are likely to be eaten by a grue.</font></a></p>
   </td>
   <td>
-  <p><a class="button outline-btn" href="/">Go to the docs!</a></p>
+  <p><a class="button primary-btn" href="/">Go to the docs!</a></p>
   <p><a href="/"><font color="#BDBDBD" size="-1">It is dark here. You are likely to be eaten by a grue.</font></a></p>
   </td>
   </tr>
@@ -327,7 +327,7 @@ This image was originally created on a white background and converted to a trans
 ## Bootstrap and CSS tricks
 
 Here are cool components you can include on Docs pages using
-[Bootstrap](http://getbootstrap.com/) and [CSS](https://www.w3schools.com/css/).
+[Bootstrap](https://getbootstrap.com) and [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS).
 
 ### Tabs
 
@@ -422,8 +422,8 @@ then it takes up the whole row.</div>
 
 You can use the Bootstrap and CSS to add expand/collapse accordions. This
 implementation makes use of the `.panel-heading` classes in
-[`_utilities.scss`](/_scss/_utilities.scss), along with [FontAwesome
-icons](http://fontawesome.io/cheatsheet/){: target="_blank" class="_" }
+[`_utilities.scss`](https://github.com/docker/docker.github.io/blob/master/_scss/_utilities.scsss),
+along with [FontAwesome icons](http://fontawesome.io/cheatsheet/){: target="_blank" rel="noopener" class="_" }
 <i class="fa fa-caret-down" aria-hidden="true"></i> (fa-caret-down) and
 <i class="fa fa-caret-up" aria-hidden="true"></i> (fa-caret-up).
 
@@ -433,13 +433,13 @@ the padding renders as white space around the code block grey background. If we
 don't like this effect, we can remove `block` for code samples.
 
 The `style="cursor: pointer"` tag enables the expand/collapse functionality to
-work on mobile. (You can use the [Xcode iPhone simulator](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/iOS_Simulator_Guide/GettingStartedwithiOSSimulator/GettingStartedwithiOSSimulator.html#//apple_ref/doc/uid/TP40012848-CH5-SW4){: target="_blank" class="_" } to test on mobile.)
+work on mobile. (You can use the [Xcode iPhone simulator](https://developer.apple.com/library/content/documentation/IDEs/Conceptual/iOS_Simulator_Guide/GettingStartedwithiOSSimulator/GettingStartedwithiOSSimulator.html#//apple_ref/doc/uid/TP40012848-CH5-SW4){: target="_blank" rel="noopener" class="_" } to test on mobile.)
 
 There are a lot of samples out there for Bootstrap accordions. This is the model
 we used: [PPxOJX accordion sample with HTML and
-CSS](https://codepen.io/anon/pen/PPxOJX){: target="_blank" class="_" }. (Here is
+CSS](https://codepen.io/anon/pen/PPxOJX){: target="_blank" rel="noopener" class="_" }. (Here is
 another example, but it uses Javascript, whereas the implementation shown
-[here](https://www.bootply.com/89084){: target="_blank" class="_" } is Bootstrap
+[here](https://www.bootply.com/89084){: target="_blank" rel="noopener" class="_" } is Bootstrap
 and CSS only.)
 
 > Make sure `data-target`'s and `id`'s match, and are unique
@@ -447,7 +447,7 @@ and CSS only.)
 >For each drop-down, the value for `data-target` and
 `collapse` `id` must match, and id's must be unique per page. In this example,
 we name these `collapseSample1` and `collapseSample2`. Check out the
-[Compose file structure example](compose/compose-file/index.md#compose-file-structure-and-examples)
+[Compose file structure example](compose/compose-file/compose-file-v3.md#compose-file-structure-and-examples)
 to see another example.
 {: .important-vanilla}
 
@@ -536,10 +536,10 @@ You can make a badge a link. Wrap the `<span>` with an `<a>` (not the other way
 around) so that the text on the badge is still white.
 
 ```html
-<a href="/test/" target="_blank" class="_"><span class="badge badge-info" data-toggle="tooltip" data-placement="right" title="Open the test page (in a new window)">Test</span></a>
+<a href="/test/" target="_blank" rel="noopener" class="_"><span class="badge badge-info" data-toggle="tooltip" data-placement="right" title="Open the test page (in a new window)">Test</span></a>
 ```
 
-<a href="/test/" target="_blank" class="_"><span class="badge badge-info" data-toggle="tooltip" data-placement="right" title="Open the test page (in a new window)">Test</span></a>
+<a href="/test/" target="_blank" rel="noopener" class="_"><span class="badge badge-info" data-toggle="tooltip" data-placement="right" title="Open the test page (in a new window)">Test</span></a>
 
 
 You can also put tooltips on badges (as the example above shows). Keep reading for tooltips.
@@ -659,6 +659,24 @@ It will render like this  with a colored sidebar and icon:
 
 ![warning admonition example](/images/warning-admonition-example.png)
 
+## Upgrade CTA
+
+Use the `upgrade-cta.html` include to render a CTA asking the user to upgrade their plan. There are two parameters:
+
+- `target-url`: This is what the upgrade button will link to. Will typically be something like `https://www.docker.com/pricing`, possibly with a utm code.
+- `header-text`: The text shown in the bolded header at the top of the CTA. Only accepts strings, no Markdown support.
+- `body`: This forms the body of the CTA. It accepts Markdown. To use multi-line bodies, use named captures as explained in [the Jekyll docs](https://jekyllrb.com/docs/includes/#passing-parameter-variables-to-includes).
+
+{% raw %}
+```liquid
+{% include upgrade-cta.html
+  body="Upgrade to gain access to this feature"
+  header-text="This feature is restricted to X and Y plans"
+  target-url="https://www.example.com/"
+%}
+```
+{% endraw %}
+
 ## Code blocks
 
 Rouge provides lots of different code block "hints". If you leave off the hint,
@@ -736,7 +754,7 @@ end
 
 Warning: Syntax highlighting breaks easily for JSON if the code you present is
 not a valid JSON document. Try running your snippet through [this
-linter](http://jsonlint.com/) to make sure it's valid, and remember: there is no
+linter](https://jsonlint.com) to make sure it's valid, and remember: there is no
 syntax for comments in JSON!
 
 ```json
@@ -779,7 +797,9 @@ command=/usr/sbin/sshd -D
 To enable syntax highlighting for Dockerfiles, use the `conf` lexer, for now.
 In the future, native Dockerfile support is coming to Rouge.
 
-```conf
+```dockerfile
+# syntax=docker/dockerfile:1
+
 #
 # example Dockerfile for https://docs.docker.com/examples/postgresql_service/
 #

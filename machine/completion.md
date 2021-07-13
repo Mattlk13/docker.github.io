@@ -4,7 +4,7 @@ keywords: machine, docker, orchestration, cli, reference
 title: Command-line completion
 ---
 
-Docker Machine comes with [command completion](http://en.wikipedia.org/wiki/Command-line_completion)
+Docker Machine comes with [command completion](https://en.wikipedia.org/wiki/Command-line_completion)
 for the bash and zsh shell.
 
 ## Installing Command Completion
@@ -35,7 +35,7 @@ Completion is available upon next login.
 
 ### Zsh
 
-Place the completion script in your a `completion` file within the ZSH
+Place the completion script in a `completion` directory within the ZSH
 configuration directory, such as `~/.zsh/completion/`.
 
 ```shell
@@ -43,7 +43,7 @@ mkdir -p ~/.zsh/completion
 curl -L https://raw.githubusercontent.com/docker/machine/v{{site.machine_version}}/contrib/completion/zsh/_docker-machine > ~/.zsh/completion/_docker-machine
 ```
 
-Include the directory in your `$fpath`, by adding a like the following to the
+Include the directory in your `$fpath`, by adding a line like the following to the
 `~/.zshrc` configuration file.
 
 ```shell
